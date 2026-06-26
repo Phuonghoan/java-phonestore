@@ -39,4 +39,21 @@ public class InputUtil {
             System.out.println("Lỗi: Không được để trống!");
         }
     }
+
+    public static boolean inputYesNo(String message) {
+        while (true) {
+            System.out.print(message);
+            String value = scanner.nextLine().trim();
+
+            if (value.equalsIgnoreCase("Y") || value.equalsIgnoreCase("YES")) {
+                return true;
+            }
+
+            if (value.equalsIgnoreCase("N") || value.equalsIgnoreCase("NO")) {
+                return false;
+            }
+
+            System.out.println("Lỗi: Vui lòng nhập Y hoặc N!");
+        }
+    }
 }
