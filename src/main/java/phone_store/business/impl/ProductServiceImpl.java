@@ -5,11 +5,65 @@ import phone_store.dao.IProductDAO;
 import phone_store.dao.impl.ProductDAOImpl;
 import phone_store.model.Product;
 
+import java.util.List;
+
 public class ProductServiceImpl implements IProductService {
     private final IProductDAO productDAO = new ProductDAOImpl();
 
     @Override
+    public List<Product> getAllProducts() {
+        return productDAO.findAll();
+    }
+
+    @Override
+    public Product getProductById(int id) {
+        if (id <= 0) {
+            return null;
+        }
+
+        return productDAO.findById(id);
+    }
+
+
+    @Override
     public boolean addProduct(Product product) {
+        if (!validateProduct(product)) {
+            return false;
+        }
+
+        return productDAO.save(product);
+    }
+
+    @Override
+    public boolean updateProduct(Product product) {
+        if (product.getId() <= 0) {
+            System.out.println("Id sản phẩm không hợp lệ!");
+            return false;
+        }
+
+        if (!validateProduct(product)) {
+            return false;
+        }
+
+        return productDAO.update(product);
+    }
+
+    @Override
+    public boolean deleteProduct(int id) {
+        if (id <= 0) {
+            System.out.println("Id sản phẩm không hợp lệ!");
+            return false;
+        }
+
+        return productDAO.deleteById(id);
+    }
+
+    @Override
+    public List<Product> searchProductsByBrand(String keyword) {
+        return productDAO.searchByBrand(keyword);
+    }
+
+    private boolean validateProduct(Product product) {
         if (product.getName() == null || product.getName().isBlank()) {
             System.out.println("Tên sản phẩm không được để trống!");
             return false;
@@ -30,6 +84,6 @@ public class ProductServiceImpl implements IProductService {
             return false;
         }
 
-        return productDAO.save(product);
+        return true;
     }
 }
