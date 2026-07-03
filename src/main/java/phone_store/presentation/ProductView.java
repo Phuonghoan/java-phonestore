@@ -18,6 +18,8 @@ public class ProductView {
             System.out.println("3. Xóa sản phẩm");
             System.out.println("4. Hiển thị danh sách sản phẩm");
             System.out.println("5. Tìm kiếm điện thoại theo brand");
+            System.out.println("6. Tìm kiếm điện thoại theo khoảng giá");
+            System.out.println("7. Tìm kiếm điện thoại theo tên và còn tồn kho");
             System.out.println("0. Quay về menu chính");
             System.out.println("==================================================");
 
@@ -38,6 +40,12 @@ public class ProductView {
                     break;
                 case 5:
                     searchProductByBrand();
+                    break;
+                case 6:
+                    searchProductByPriceRange();
+                    break;
+                case 7:
+                    searchProductByNameAndStockAvailable();
                     break;
                 case 0:
                     return;
@@ -204,5 +212,28 @@ public class ProductView {
         System.out.println("Giá bán: " + product.getPrice());
         System.out.println("Tồn kho: " + product.getStock());
         System.out.println("--------------------------------------------");
+    }
+
+    private void searchProductByPriceRange() {
+        System.out.println();
+        System.out.println("========== TÌM KIẾM ĐIỆN THOẠI THEO KHOẢNG GIÁ ==========");
+
+        double minPrice = InputUtil.inputDouble("Nhập giá thấp nhất: ");
+        double maxPrice = InputUtil.inputDouble("Nhập giá cao nhất: ");
+
+        List<Product> products = productService.searchProductsByPriceRange(minPrice, maxPrice);
+
+        displayProductList(products);
+    }
+
+    private void searchProductByNameAndStockAvailable() {
+        System.out.println();
+        System.out.println("========== TÌM KIẾM ĐIỆN THOẠI THEO TÊN VÀ CÒN TỒN KHO ==========");
+
+        String keyword = InputUtil.inputString("Nhập từ khóa tên sản phẩm cần tìm: ");
+
+        List<Product> products = productService.searchProductsByNameAndStockAvailable(keyword);
+
+        displayProductList(products);
     }
 }
