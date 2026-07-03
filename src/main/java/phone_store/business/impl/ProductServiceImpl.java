@@ -86,4 +86,29 @@ public class ProductServiceImpl implements IProductService {
 
         return true;
     }
+
+    @Override
+    public List<Product> searchProductsByPriceRange(double minPrice, double maxPrice) {
+        if (minPrice < 0 || maxPrice < 0) {
+            System.out.println("Khoảng giá không được âm!");
+            return List.of();
+        }
+
+        if (minPrice > maxPrice) {
+            System.out.println("Giá bắt đầu không được lớn hơn giá kết thúc!");
+            return List.of();
+        }
+
+        return productDAO.searchByPriceRange(minPrice, maxPrice);
+    }
+
+    @Override
+    public List<Product> searchProductsByNameAndStockAvailable(String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            System.out.println("Từ khóa tìm kiếm không được để trống!");
+            return List.of();
+        }
+
+        return productDAO.searchByNameAndStockAvailable(keyword);
+    }
 }

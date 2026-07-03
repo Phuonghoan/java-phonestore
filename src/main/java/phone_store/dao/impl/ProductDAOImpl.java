@@ -156,6 +156,68 @@ public class ProductDAOImpl implements IProductDAO {
         return products;
     }
 
+    @Override
+    public List<Product> searchByPriceRange(double minPrice, double maxPrice) {
+        List<Product> products = new ArrayList<>();
+
+        String sql = """
+                SELECT id, name, brand, price, stock 
+                FROM product
+                WHERE price BETWEEN ? AND ?
+                ORDER BY price ASC
+                """;
+        try (
+                Connection conn = DBUtil.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
+            ps.setDouble(1, minPrice);
+            ps.setDouble(2, maxPrice);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Product product = mapResultSetToProduct(rs);
+                    products.add(product);
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Lỗi khi tìm kiếm sản phẩm theo khoảng giá: " + e.getMessage());
+        }
+
+        return products;
+    }
+
+    @Override
+    public List<Product> searchByNameAndStockAvailable(String keyword) {
+        List<Product> products = new ArrayList<>();
+
+        String sql = """
+            SELECT id, name, brand, price, stock
+            FROM product
+            WHERE name ILIKE ? AND stock > 0
+            ORDER BY id ASC
+            """;
+
+        try (
+                Connection conn = DBUtil.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
+            ps.setString(1, "%" + keyword + "%");
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Product product = mapResultSetToProduct(rs);
+                    products.add(product);
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Lỗi khi tìm kiếm sản phẩm còn tồn kho: " + e.getMessage());
+        }
+
+        return products;
+    }
+
     private Product mapResultSetToProduct(ResultSet rs) throws Exception {
         Product product = new Product();
 

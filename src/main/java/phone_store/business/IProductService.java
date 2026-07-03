@@ -5,14 +5,11 @@ import java.util.List;
 
 public interface IProductService {
     List<Product> getAllProducts();
-
     Product getProductById(int id);
-
     boolean addProduct(Product product);
-
     boolean updateProduct(Product product);
-
     boolean deleteProduct(int id);
-
     List<Product> searchProductsByBrand(String keyword);
+    List<Product> searchProductsByPriceRange(double minPrice, double maxPrice);
+    List<Product> searchProductsByNameAndStockAvailable(String keyword);
 }
