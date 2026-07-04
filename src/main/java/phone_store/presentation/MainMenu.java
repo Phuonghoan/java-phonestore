@@ -4,11 +4,13 @@ import phone_store.utils.InputUtil;
 
 public class MainMenu {
     private final ProductView productView = new ProductView();
+    private final CustomerView customerView = new CustomerView();
 
     public void showMenu() {
         do {
             System.out.println("========== GIAO DIỆN BẮT ĐẦU CHƯƠNG TRÌNH ==========");
             System.out.println("1. Quản lý điện thoại");
+            System.out.println("2. Quản lý khách hàng");
             System.out.println("0. Thoát chương trình");
             System.out.println("====================================================");
 
@@ -18,6 +20,9 @@ public class MainMenu {
                 case 1:
                     productView.showProductMenu();
                     break;
+                case 2:
+                    customerView.showCustomerMenu();
+                    break;
                 case 0:
                     System.out.println("Đã thoát chương trình.");
                     System.exit(0);
@@ -25,7 +30,6 @@ public class MainMenu {
                 default:
                     System.out.println("Lựa chọn không hợp lệ. Vui lòng nhập lại!");
             }
-
         } while (true);
     }
 }
